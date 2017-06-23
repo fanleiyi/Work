@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.example.day06_03_zhihu.entity.Classify;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +32,7 @@ public abstract class MyBaseAdapter<T>
      * @param list    添加的数据
      * @param isClear 是否清空原有数据
      */
-    public void addDatas(
-            List<T> list,
-            boolean isClear) {
+    public void addDatas(List<T> list, boolean isClear) {
         if (isClear) {
             datas.clear();
         }
@@ -75,6 +75,7 @@ public abstract class MyBaseAdapter<T>
             int i,
             View view,
             ViewGroup viewGroup);
+
 }
 
 

@@ -77,8 +77,11 @@ public class MainActivity extends Activity {
 
     @OnClick(R.id.actionbar_line_DM)
     public void jumpToCity(View v){
-        startActivity(new Intent(this,CityActivity.class));
+        Intent intent = new Intent(this, CityActivity.class);
+        startActivityForResult(intent,101);
     }
+
+
 
     @OnClick(R.id.actionbar_image_add)
     public void toggleMenu(View v){
@@ -88,6 +91,7 @@ public class MainActivity extends Activity {
             linearLayout_menu.setVisibility(View.INVISIBLE);
         }
     }
+
 
 
 
@@ -283,4 +287,14 @@ public class MainActivity extends Activity {
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK && requestCode==101){
+            String city = data.getStringExtra("city");
+            textView_title_DM.setText(city);
+        }
+    }
+
 }

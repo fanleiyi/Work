@@ -25,8 +25,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.http.GET;
@@ -203,7 +205,6 @@ public class VolleyClient {
 
     }
 
-
     /**
      * 自定义的网络请求对象
      */
@@ -235,5 +236,34 @@ public class VolleyClient {
             listener.onResponse(tuanBean);
         }
     }
+
+    public void getCitys(final Response.Listener<List<String>> listener){
+        // 1.获取新增团购ID列表
+        final Map<String,String> parmas=new HashMap<>();
+        final List<String> citys=new ArrayList<>();
+        final String url=HttpUtil.getURL("http://api.dianping.com/v1/metadata/get_cities_with_businesses",parmas);
+        StringRequest request= new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                // 利用Jsonlib（JSONObject）提取团购id
+                try {
+                    JSONObject jsonObject=new JSONObject(s);
+                    JSONArray jsonArray=jsonObject.getJSONArray("cities");
+
+                    for (int i=0;i<jsonArray.length();i++){
+                        citys.add(jsonArray.getString(i));
+                    }
+                    listener.onResponse(citys);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        },null);
+        queue.add(request);
+
+    }
+
+
+
 
 }

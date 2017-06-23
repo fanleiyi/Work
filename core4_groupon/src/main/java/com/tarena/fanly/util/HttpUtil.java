@@ -189,6 +189,9 @@ public class HttpUtil {
                 .error(R.drawable.bucket_no_picture) // 失败时图片
                 .into(iv);// 设置到imageView
     }
+    public static void getCitys(Response.Listener<List<String>> listener){
+        VolleyClient.getInstance().getCitys(listener);
+    }
 
 
 }
