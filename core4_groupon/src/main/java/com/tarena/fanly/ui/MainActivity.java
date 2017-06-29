@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,8 +41,6 @@ public class MainActivity extends Activity {
     // 头部
     @BindView(R.id.actionbar_text_DM)
     TextView textView_title_DM;
-    @BindView(R.id.actionbar_line)
-    LinearLayout linearLayout_action;
     @BindView(R.id.actionbar_line_DM)
     LinearLayout linearLayout_action_DM;
     @BindView(R.id.actionbar_image_add)
@@ -66,6 +65,7 @@ public class MainActivity extends Activity {
     private View view_vp;
     private PagerAdapter pagerAdapter;
     private ViewPager viewPager;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +171,19 @@ public class MainActivity extends Activity {
 
                 int layoutId = resIDs[position%3];
                 View view = LayoutInflater.from(MainActivity.this).inflate(layoutId, viewPager,false);
+                if (position%3==0){
+                    button = (Button) view.findViewById(R.id.vp_main_btn_ms);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(MainActivity.this,BusinessActivity.class);
+                            intent.putExtra("city",textView_title_DM.getText().toString());
+                            startActivity(intent);
+
+                        }
+                    });
+                }
+
                 container.addView(view);
                 return view;
             }
@@ -210,6 +223,14 @@ public class MainActivity extends Activity {
             }
         });
     }
+
+    @OnClick(R.id.rb_main_find)
+    public void iump(View v){
+        Intent intent=new Intent(this,FindActivity.class);
+        intent.putExtra("from","main");
+        startActivity(intent);
+    }
+
 
    @Override
     protected void onResume() {

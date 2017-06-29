@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.android.volley.Response;
@@ -19,6 +20,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class ClassifyActivity extends Activity {
 
@@ -27,18 +30,21 @@ public class ClassifyActivity extends Activity {
     DBUtil dbUtil;
     ClassifyAdapter adapter;
 
+    List<Classify.ResultBean> datas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classify);
         ButterKnife.bind(this);
-       dbUtil=new DBUtil(this);
+        dbUtil=new DBUtil(this);
         UI();
     }
 
     private void UI() {
-
-        adapter=new ClassifyAdapter();
+        datas = new ArrayList<>();
+        adapter=new ClassifyAdapter(this);
+        gridView.setAdapter(adapter);
     }
 
     @Override
@@ -49,58 +55,48 @@ public class ClassifyActivity extends Activity {
 
     private void refresh() {
         // 从内存缓存中读取数据
-        if (MyApp.resultBeenList!=null&&MyApp.resultBeenList.size()>0){
-            // adapter.addDatas(MyApp.resultBeenList,true);
+        if (MyApp.resultBeenList != null && MyApp.resultBeenList.size() > 0) {
+            adapter.addDatas(MyApp.resultBeenList, true);
             Log.d("TAG", "菜谱数据从内存缓存中加载 ");
             return;
         }
 
-        //从数据库中读取城市数据
+        //从数据库中读取菜谱数据
         List<Classify.ResultBean> list = dbUtil.query();
-        if(list!=null && list.size()>0){
-           //  adapter.addDatas(list,true);
-
+        if (list != null && list.size() > 0) {
+            adapter.addDatas(list, true);
             MyApp.resultBeenList = list;
             Log.d("TAG", "菜谱数据从数据库中加载 ");
             return;
-
         }
-
-
-        HttpUtil.getClassify(new Response.Listener<List<Classify.ResultBean>>() {
+        HttpUtil.getClassify(new Callback<Classify>() {
             @Override
-            public void onResponse(List<Classify.ResultBean> strings) {
-                Log.i("TAG",strings.toString());
-                // 根据List<String> 创建一个List<CitynameBean>
-                // 将List<CitynameBean>放在布局中显示
-                final List<Classify.ResultBean> resultBeanList=new ArrayList<>();
-                    for (Classify.ResultBean bean:strings){
-                        Classify.ResultBean bean1=new Classify.ResultBean();
-                        bean1.setParentId(bean.getParentId());
-                        bean1.setName(bean.getName());
-                        bean1.setList(bean.getList());
-                        resultBeanList.add(bean1);
-                    }
-
-
-             //    adapter.addAll(ctNames,true);
-                // 缓存数据
-                MyApp.resultBeenList=resultBeanList;
-                //向数据库中写入菜谱数据
-                new Thread(){
+            public void onResponse(Call<Classify> call, retrofit2.Response<Classify> response) {
+                final Classify classify = response.body();
+                datas.addAll(classify.getResult());
+                adapter.addDatas(datas, true);
+                //向数据库中写入城市数据
+                new Thread() {
                     @Override
                     public void run() {
                         super.run();
                         long start = System.currentTimeMillis();
-                        dbUtil.insertBatch(resultBeanList);
-                        Log.d("TAG", "写入数据库完毕，耗时："+(System.currentTimeMillis()-start));
+                        MyApp.resultBeenList=classify.getResult();
+                        dbUtil.insertBatch(classify.getResult());
+                        for (Classify.ResultBean bean:MyApp.resultBeenList){
+                            dbUtil.insertBatch2(bean.getList());
+                        }
+                        Log.d("TAG", "写入数据库完毕，耗时：" + (System.currentTimeMillis() - start));
 
                     }
                 }.start();
             }
+            @Override
+            public void onFailure(Call<Classify> call, Throwable throwable) {
+            }
         });
-    }
 
+    }
     public void onBack(View v){
         finish();
     }

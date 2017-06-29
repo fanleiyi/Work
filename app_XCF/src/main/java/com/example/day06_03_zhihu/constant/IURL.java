@@ -1,5 +1,7 @@
 package com.example.day06_03_zhihu.constant;
 
+import okhttp3.HttpUrl;
+
 /**
  * Created by pjy on 2017/6/1.
  */
@@ -12,4 +14,5 @@ public interface IURL {
      String ADDEMP_URL=ROOT+"addEmp";
      String EMPLOYEELIST_URL=ROOT+"listEmp";
      String FIRST="first";
+     String BASEURL="http://apis.juhe.cn/cook/";
 }

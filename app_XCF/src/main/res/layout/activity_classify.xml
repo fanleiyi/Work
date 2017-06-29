@@ -32,11 +32,12 @@
     </LinearLayout>
 
     <GridView
+        android:layout_marginTop="20dp"
         android:columnWidth="90dp"
-        android:horizontalSpacing="10dp"
+        android:horizontalSpacing="15dp"
+        android:verticalSpacing="20dp"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp"
         android:id="@+id/gridView_Classify"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></GridView>

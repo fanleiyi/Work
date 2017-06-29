@@ -93,15 +93,18 @@ public static class ResultBean {
             this.list = list;
         }
 
+        @DatabaseTable
         public static class ListBean {
             /**
              * id : 1
              * name : 家常菜
              * parentId : 10001
              */
-
+            @DatabaseField(id =true)
             private String id;
+            @DatabaseField
             private String name;
+            @DatabaseField
             private String parentId;
 
             public String getId() {

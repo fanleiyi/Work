@@ -16,6 +16,8 @@ import java.util.concurrent.Callable;
 public class DBUtil {
 
     Dao<Classify.ResultBean,String> dao;
+    Dao<Classify.ResultBean.ListBean,String> dao2;
+
     DBHelper dbHelper;
 
     public DBUtil(Context context){
@@ -31,6 +33,13 @@ public class DBUtil {
     public void insert(Classify.ResultBean resultBean){
         try {
             dao.createIfNotExists(resultBean);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void insert(Classify.ResultBean.ListBean bean){
+        try {
+            dao2.createIfNotExists(bean);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,28 +61,57 @@ public class DBUtil {
             e.printStackTrace();
         }
     }
+    public void insertBatch2(final List<Classify.ResultBean.ListBean> list){
+        // 建立连接后一次性将数据全部写入后再断开连接
+        try {
+            dao2.callBatchTasks(new Callable<Object>() {
+                @Override
+                public Object call() throws Exception {
+                    for (Classify.ResultBean.ListBean bean:list){
+                        insert(bean);
+                    }
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    public void insertAll(List<Classify.ResultBean> cityNameBeanList){
+    public void insertAll(List<Classify.ResultBean> resultBeen){
 
-        for (Classify.ResultBean name:cityNameBeanList){
+        for (Classify.ResultBean name:resultBeen){
             insert(name);
         }
+    }
+  public void insertAll2(List<Classify.ResultBean.ListBean> been){
 
+        for (Classify.ResultBean.ListBean name:been){
+            insert(name);
+        }
     }
 
     public List<Classify.ResultBean> query(){
-        List<Classify.ResultBean> cityNameBeanList = null;
+        List<Classify.ResultBean> bean;
 
         try {
-            cityNameBeanList = dao.queryForAll();
-            return cityNameBeanList;
+            bean = dao.queryForAll();
+            return bean;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("查询异常");
         }
+    }
+  public List<Classify.ResultBean.ListBean> query2(){
+        List<Classify.ResultBean.ListBean> bean;
 
-
-
+        try {
+            bean = dao2.queryForAll();
+            return bean;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("查询异常");
+        }
     }
 
 }

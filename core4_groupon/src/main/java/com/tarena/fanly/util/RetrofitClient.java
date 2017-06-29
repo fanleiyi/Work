@@ -1,8 +1,11 @@
 package com.tarena.fanly.util;
 
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.tarena.fanly.bean.BusinessBean;
 import com.tarena.fanly.bean.CityBean;
+import com.tarena.fanly.bean.DistrictBean;
 import com.tarena.fanly.bean.TuanBean;
 import com.tarena.fanly.constant.Constant;
 
@@ -28,47 +31,50 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * Created by tarena on 2017/6/19.
+ * Created by pjy on 2017/6/19.
  */
 
 public class RetrofitClient {
 
-    private static RetrofitClient Instance;
+    private static RetrofitClient INSTANCE;
 
     public static RetrofitClient getInstance(){
-        if (Instance==null){
+        if(INSTANCE==null){
+
             synchronized (RetrofitClient.class){
-                if (Instance==null){
-                    return new RetrofitClient();
+                if(INSTANCE==null){
+                    INSTANCE = new RetrofitClient();
                 }
             }
+
         }
-        return Instance;
+
+        return INSTANCE;
     }
 
     private Retrofit retrofit;
-    private OkHttpClient okHttpClient;
 
-    private NetService service;
+    private OkHttpClient okhttpClient;
 
-    public RetrofitClient(){
-        okHttpClient=new OkHttpClient.Builder().addInterceptor(new MyOkHttpInterceptor()).build();
-        retrofit=new Retrofit.Builder().baseUrl(Constant.BASEURL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        service=retrofit.create(NetService.class);
+    private NetService netService;
+
+    private RetrofitClient(){
+        okhttpClient = new OkHttpClient.Builder().addInterceptor(new MyOkHttpInterceptor()).build();
+        retrofit = new Retrofit.Builder().client(okhttpClient).baseUrl(Constant.BASEURL).addConverterFactory(ScalarsConverterFactory.create()).addConverterFactory(GsonConverterFactory.create()).build();
+        netService = retrofit.create(NetService.class);
     }
 
     public void test(){
-        Map<String,String> params = new HashMap<>();
-        params.put("city", "北京");
-        params.put("category", "美食");
-        Call<String> call = service.test(HttpUtil.APPKEY, HttpUtil.getSign(HttpUtil.APPKEY, HttpUtil.APPSECRET, params), params);
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("city","北京");
+        params.put("category","美食");
+        final String sign = HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,params);
+        Call<String> call = netService.test(HttpUtil.APPKEY, sign, params);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String string = response.body();
-                Log.d("TAG","Retrofit -> "+string);
+                Log.d("TAG", "Retrofit获得的网络响应： "+string);
             }
 
             @Override
@@ -76,106 +82,6 @@ public class RetrofitClient {
 
             }
         });
-    }
-
-    public void getDailyDeals(String city,final Callback<String> callback2){
-
-        final Map<String,String> parmas = new HashMap<>();
-        parmas.put("city",city);
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
-        parmas.put("date",date);
-        String sign = HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,parmas);
-
-        Call<String> dailyIds = service.getDailyIds(HttpUtil.APPKEY, sign, parmas);
-        dailyIds.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-           try {
-               String s = response.body();
-               JSONObject jsonObject=new JSONObject(s);
-               JSONArray jsonArray=jsonObject.getJSONArray("id_list");
-               int size=jsonArray.length();
-               if (size>40){
-                   size=40;
-               }
-               StringBuilder sb=new StringBuilder();
-               for (int i=0;i<size;i++){
-                   String id=jsonArray.getString(i);
-                   sb.append(id).append(",");
-               }
-               if (sb.length()>0){
-                   String idlist=sb.substring(0,sb.length()-1);
-                   Map<String,String> params2=new HashMap<String, String>();
-                   params2.put("deal_ids",idlist);
-                   String sign2=HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,params2);
-                   Call<String> call2=service.getDailyDeals(HttpUtil.APPKEY,sign2,params2);
-                   call2.enqueue(callback2);
-               }else {
-                   callback2.onResponse(null,null);
-               }
-           }catch (Exception e){
-               e.printStackTrace();
-           }
-
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable throwable) {
-
-            }
-        });
-
-
-    }
-
-    public void getDailyDeals2(String city,final Callback<TuanBean> callback2){
-
-        final Map<String,String> parmas = new HashMap<>();
-        parmas.put("city",city);
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
-        parmas.put("date",date);
-        String sign = HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,parmas);
-
-        Call<String> dailyIds = service.getDailyIds(HttpUtil.APPKEY, sign, parmas);
-        dailyIds.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                try {
-                    String s = response.body();
-
-                    JSONObject jsonObject=new JSONObject(s);
-                    JSONArray jsonArray=jsonObject.getJSONArray("id_list");
-                    int size=jsonArray.length();
-                    if (size>40){
-                        size=40;
-                    }
-                    StringBuilder sb=new StringBuilder();
-                    for (int i=0;i<size;i++){
-                        String id=jsonArray.getString(i);
-                        sb.append(id).append(",");
-                    }
-                    if (sb.length()>0){
-                        String idlist=sb.substring(0,sb.length()-1);
-                        Map<String,String> params2=new HashMap<String, String>();
-                        params2.put("deal_ids",idlist);
-                        String sign2=HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,params2);
-                        Call<TuanBean> call2=service.getDailyDeals2(HttpUtil.APPKEY,sign2,params2);
-                        call2.enqueue(callback2);
-                    }else {
-                        callback2.onResponse(null,null);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable throwable) {
-
-            }
-        });
-
 
     }
 
@@ -185,13 +91,13 @@ public class RetrofitClient {
         params.put("city",city);
         String date = new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
         params.put("date",date);
-        Call<String> idcall = service.getDailyIds2(params);
+        Call<String> idcall = netService.getDailyIds2(params);
         idcall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 try {
                     JSONObject jsonObject= new JSONObject(response.body());
-                     JSONArray jsonArray = jsonObject.getJSONArray("id_list");
+                    JSONArray jsonArray = jsonObject.getJSONArray("id_list");
 
                     int size = jsonArray.length();
                     if(size>40){
@@ -210,7 +116,7 @@ public class RetrofitClient {
 
                         Map<String,String> params2 = new HashMap<String, String>();
                         params2.put("deal_ids",idlist);
-                        Call<TuanBean> dealCall = service.getDailyDeals3(params2);
+                        Call<TuanBean> dealCall = netService.getDailyDeals3(params2);
                         dealCall.enqueue(callback2);
                     }else{
                         callback2.onResponse(null,null);
@@ -228,6 +134,139 @@ public class RetrofitClient {
             }
         });
     }
+
+    public void getDailyDeals2(String city,final Callback<TuanBean> callback2){
+        final Map<String,String> params = new HashMap<String,String>();
+        params.put("city",city);
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
+        params.put("date",date);
+        String sign = HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,params);
+        Call<String> ids = netService.getDailyIds(HttpUtil.APPKEY, sign, params);
+        ids.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+
+                try {
+                    JSONObject jsonObject= new JSONObject(response.body());
+                    JSONArray jsonArray = jsonObject.getJSONArray("id_list");
+
+                    int size = jsonArray.length();
+                    if(size>40){
+                        size = 40;
+                    }
+
+                    StringBuilder sb = new StringBuilder();
+
+                    for(int i=0;i<size;i++){
+                        String id = jsonArray.getString(i);
+                        sb.append(id).append(",");
+                    }
+
+                    if(sb.length()>0){
+
+                        String idlist = sb.substring(0,sb.length()-1);
+                        Map<String,String> params2 = new HashMap<String, String>();
+                        params2.put("deal_ids",idlist);
+                        String sign2 = HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,params2);
+                        Call<TuanBean> call2= netService.getDailyDeals2(HttpUtil.APPKEY, sign2, params2);
+                        call2.enqueue(callback2);
+                    }else{
+                        callback2.onResponse(null,null);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable throwable) {
+
+            }
+        });
+
+    }
+
+
+    public void getDailyDeals(String city,final Callback<String> callback2){
+
+        final Map<String,String> params = new HashMap<String,String>();
+        params.put("city",city);
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(System.currentTimeMillis());
+        params.put("date",date);
+        String sign = HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,params);
+        Call<String> ids = netService.getDailyIds(HttpUtil.APPKEY, sign, params);
+        ids.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+
+                try {
+                    JSONObject jsonObject= new JSONObject(response.body());
+                    JSONArray jsonArray = jsonObject.getJSONArray("id_list");
+
+                    int size = jsonArray.length();
+                    if(size>40){
+                        size = 40;
+                    }
+
+                    StringBuilder sb = new StringBuilder();
+
+                    for(int i=0;i<size;i++){
+                        String id = jsonArray.getString(i);
+                        sb.append(id).append(",");
+                    }
+
+                    if(sb.length()>0){
+
+                        String idlist = sb.substring(0,sb.length()-1);
+                        Map<String,String> params2 = new HashMap<String, String>();
+                        params2.put("deal_ids",idlist);
+                        String sign2 = HttpUtil.getSign(HttpUtil.APPKEY,HttpUtil.APPSECRET,params2);
+                        Call<String> call2= netService.getDailyDeals(HttpUtil.APPKEY, sign2, params2);
+                        call2.enqueue(callback2);
+                    }else{
+                        callback2.onResponse(null,null);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable throwable) {
+
+            }
+        });
+
+    }
+
+    public void getCities(Callback<CityBean> callback){
+
+        Call<CityBean> call = netService.getCities();
+        call.enqueue(callback);
+
+    }
+
+    public void getFoods(String city, String region, Callback<BusinessBean> callback){
+
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("city",city);
+        params.put("category","美食");
+        if(!TextUtils.isEmpty(region)){
+            params.put("region",region);
+        }
+        Call<BusinessBean> call = netService.getFoods(params);
+        call.enqueue(callback);
+
+    }
+
 
     /**
      * OKHTTP的拦截器
@@ -258,9 +297,10 @@ public class RetrofitClient {
             Log.d("TAG", "原始请求路径------> "+urlString);
 
             StringBuilder sb = new StringBuilder(urlString);
-            if (set.size()==0){
+            if(set.size()==0){
+                //意味着原有请求路径中没有参数
                 sb.append("?");
-            }else {
+            }else{
                 sb.append("&");
             }
             sb.append("appkey=").append(HttpUtil.APPKEY);
@@ -273,9 +313,15 @@ public class RetrofitClient {
         }
     }
 
-    public void getCitys(Call<CityBean> call){
+    public void getDistricts(String city, Callback<DistrictBean> callback){
 
+        Map<String,String> params = new HashMap<>();
+        params.put("city",city);
+
+        Call<DistrictBean> call = netService.getDistricts(params);
+        call.enqueue(callback);
     }
+
 
 
 

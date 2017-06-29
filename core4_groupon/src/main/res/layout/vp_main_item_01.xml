@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp">
         <Button
+            android:id="@+id/vp_main_btn_ms"
             android:background="@null"
             android:text="美食"
             android:drawableTop="@drawable/ic_home_food"

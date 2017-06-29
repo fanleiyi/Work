@@ -6,7 +6,6 @@
     <ImageView
         android:id="@+id/iv_classify"
         android:scaleType="fitXY"
-        android:src="@drawable/cf"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <ImageView

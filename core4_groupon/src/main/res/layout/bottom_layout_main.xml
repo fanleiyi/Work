@@ -36,6 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <RadioButton
+            android:id="@+id/rb_main_find"
             android:textSize="14sp"
             android:layout_gravity="center"
             android:gravity="center"

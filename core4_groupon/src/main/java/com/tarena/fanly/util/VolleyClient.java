@@ -3,6 +3,7 @@ package com.tarena.fanly.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -260,9 +261,27 @@ public class VolleyClient {
             }
         },null);
         queue.add(request);
+    }
+
+    public void getFoods(String city, String region, Response.Listener<String> listener){
+
+        Map<String,String> params = new HashMap<String,String>();
+        params.put("city",city);
+        params.put("category","美食");
+        if(!TextUtils.isEmpty(region)){
+            params.put("region",region);
+        }
+        String url = HttpUtil.getURL("http://api.dianping.com/v1/business/find_businesses",params);
+        StringRequest req = new StringRequest(url,listener,null);
+        queue.add(req);
 
     }
 
+    public void getComment(String url, Response.Listener<String> listener){
+
+        StringRequest request=new StringRequest(url,listener,null);
+        queue.add(request);
+    }
 
 
 

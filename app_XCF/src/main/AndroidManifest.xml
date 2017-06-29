@@ -10,8 +10,8 @@
         android:icon="@mipmap/icon"
         android:label="下厨房"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,9 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".activity.MainActivity"
             android:label=""
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".activity.NoviceActivity" />
         <activity android:name=".activity.LoginActivity" />

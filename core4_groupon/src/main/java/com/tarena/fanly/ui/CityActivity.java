@@ -18,6 +18,7 @@ import com.tarena.fanly.bean.CitynameBean;
 import com.tarena.fanly.util.DBUtil;
 import com.tarena.fanly.util.HttpUtil;
 import com.tarena.fanly.util.PinYinUtil;
+import com.tarena.fanly.view.MyLetterView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,8 @@ public class CityActivity extends Activity {
     @BindView(R.id.recyclerview_city)
     RecyclerView recyclerView;
     CityAdapter adapter;
+    @BindView(R.id.myletterViewId)
+    MyLetterView myLetterView;
 
     DBUtil dbUtil;
 
@@ -44,7 +47,23 @@ public class CityActivity extends Activity {
         ButterKnife.bind(this);
         dbUtil = new DBUtil(MyApp.CONTEXT);
         initRecyclerView();
+        myLetterView.setOnTouchLetterListener(new MyLetterView.OnTouchLetterListener() {
+            @Override
+            public void onTouchLetter(String letter) {
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (!letter.equals("热门")) {
+                    int position = adapter.getPositionForSection(letter.charAt(0));
+                    if (adapter.getHeaderView()!=null){
+                        position+=1;
+                    }
+                    manager.scrollToPositionWithOffset(position,0);
 
+                }else {
+                    recyclerView.scrollToPosition(0);
+                }
+
+            }
+        });
     }
 
     private void initRecyclerView() {

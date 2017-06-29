@@ -1,36 +1,40 @@
 package com.tarena.fanly.util;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.ImageView;
 
 
 import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 import com.tarena.fanly.R;
 import com.tarena.fanly.app.MyApp;
+import com.tarena.fanly.bean.BusinessBean;
+import com.tarena.fanly.bean.CityBean;
+import com.tarena.fanly.bean.DistrictBean;
 import com.tarena.fanly.bean.TuanBean;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 
 /**
@@ -111,7 +115,7 @@ public class HttpUtil {
      * @param params
      * @return
      */
-    private static String getQuery(String appkey, String sign, Map<String, String> params) {
+    public static String getQuery(String appkey, String sign, Map<String, String> params) {
         try {
             // 添加签名
             StringBuilder stringBuilder = new StringBuilder();
@@ -189,9 +193,53 @@ public class HttpUtil {
                 .error(R.drawable.bucket_no_picture) // 失败时图片
                 .into(iv);// 设置到imageView
     }
+
     public static void getCitys(Response.Listener<List<String>> listener){
         VolleyClient.getInstance().getCitys(listener);
     }
 
+    public static void getCitiesByRetrofit(Callback<CityBean> callback){
+        RetrofitClient.getInstance().getCities(callback);
+    }
 
+    public static void getFoodsByVolley(String city, String region, Response.Listener<String> listener){
+        VolleyClient.getInstance().getFoods(city,region,listener);
+    }
+
+    public static void getFoodsByRetrofit(String city, String region, Callback<BusinessBean> callback){
+        RetrofitClient.getInstance().getFoods(city,region,callback);
+    }
+
+    public static void getDistrictsByRetrofit(String city, Callback<DistrictBean> callback){
+        RetrofitClient.getInstance().getDistricts(city,callback);
+    }
+
+
+    public static void getCommentByVolley(String url, Response.Listener<String> listener){
+        VolleyClient.getInstance().getComment(url,listener);
+    }
+
+    public static void getComment(final String url, final OnResponseListener<Document> listener){
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    final Document document = Jsoup.connect(url).get();
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onResponse(document);
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    public interface OnResponseListener<T>{
+        void onResponse(T t);
+    }
 }

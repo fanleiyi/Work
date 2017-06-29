@@ -62,32 +62,4 @@ public class VolleyClient {
         });
     }
 
-    public void getCliassify(final Response.Listener<List<Classify.ResultBean>> listener){
-        final List<Classify.ResultBean> classifys=new ArrayList<>();
-        final String url=HttpUtil.getURL("http://apis.juhe.cn/cook/category","parentid=&dtype=&key=bc90c61cecbb5c2ca08fca947c7a16eb");
-        StringRequest request= new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                // 利用Jsonlib（JSONObject）提取团购id
-                try {
-                    JSONObject jsonObject=new JSONObject(s);
-                    JSONArray jsonArray=jsonObject.getJSONArray("result");
-
-                    for (int i=0;i<jsonArray.length();i++){
-                        Classify.ResultBean bean;
-                        bean= (Classify.ResultBean) jsonArray.get(i);
-                        classifys.add(bean);
-                    }
-                    listener.onResponse(classifys);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        },null);
-        queue.add(request);
-
-    }
-
-
-
 }
