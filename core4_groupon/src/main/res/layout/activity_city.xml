@@ -1,30 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_city2"
-    android:background="#fff"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tarena.fanly.ui.CityActivity">
+    android:orientation="vertical">
 
-    <include layout="@layout/actionbar_city"/>
+    <include
 
-    <include layout="@layout/actionbar_city2"/>
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_city"
+        layout="@layout/header_city_layout" />
+
+    <include
+
+        layout="@layout/city_search_layout" />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_city_cities"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
-    <com.tarena.fanly.view.MyLetterView
-        android:id="@+id/myletterViewId"
-        app:letter_color="#ff0000ff"
+    <com.tarena.groupon.view.MyLetterView
+
+        android:id="@+id/mlv_city"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:layout_width="30dp"
-        android:layout_height="match_parent" />
-</FrameLayout>
+        app:letter_color="#ff0000ff"
+
+
+        />
+
+    </FrameLayout>
+
 </LinearLayout>

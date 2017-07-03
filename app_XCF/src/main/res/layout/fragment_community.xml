@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.example.day06_03_zhihu.fragment.CommunityFragment">
+    tools:context="com.example.day06_03_zhihu.com.example.xcf.fragment.CommunityFragment">
 
     <include layout="@layout/action_item_01"></include>
 

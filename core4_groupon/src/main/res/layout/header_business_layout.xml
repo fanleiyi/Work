@@ -36,7 +36,7 @@
             android:background="@drawable/tab_right_normal"
 			android:gravity="center"
 			android:text="闪惠团购"
-			android:textColor="#ff6633"
+			android:textColor="#ff000000"
             />
     </LinearLayout>
     

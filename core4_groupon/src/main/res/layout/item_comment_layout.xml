@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.tarena.fanly.view.CircleImageView
+    <com.tarena.groupon.view.CircleImageView
         android:id="@+id/iv_comment_item_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"

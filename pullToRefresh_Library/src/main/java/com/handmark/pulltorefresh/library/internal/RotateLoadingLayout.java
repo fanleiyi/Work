@@ -19,8 +19,15 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView.ScaleType;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Orientation;
@@ -81,18 +88,18 @@ public class RotateLoadingLayout extends LoadingLayout {
             //根据原始图片的大小创建一个缩小的图片
 
             int id = resIds[idx];
-            Bitmap src = BitmapFactory.decodeResource(getResources(), id);
-            int width = (int) (src.getWidth() * idx / 10);
-            int height = (int) (src.getHeight() * idx / 10);
-            Bitmap dest = Bitmap.createScaledBitmap(src, width, height, true);
-            mHeaderImage.setImageBitmap(dest);
+//            Bitmap src = BitmapFactory.decodeResource(getResources(), id);
+//            int width = (int) (src.getWidth() * idx / 10);
+//            int height = (int) (src.getHeight() * idx / 10);
+//            Bitmap dest = Bitmap.createScaledBitmap(src, width, height, true);
+//            mHeaderImage.setImageBitmap(dest);
             //另外一种思路：利用原始图片创建一个ScaleDrawable
             //利用Eclipse SDK4.2环境下，以下代码测试正常
             //AS SDK6.0 无效果~~~ -.-!!!
-            //Drawable drawable = getContext().getDrawable(id);
-            //drawable.setLevel(100);
-            //ScaleDrawable sd = new ScaleDrawable(drawable, Gravity.CENTER,0.5f,0.5f);
-            //mHeaderImage.setImageDrawable(sd);
+            Drawable drawable = getResources().getDrawable(id);
+            ScaleDrawable sd = new ScaleDrawable(drawable, Gravity.CENTER,(10-idx)/10.0f,(10-idx)/10.f);
+            drawable.setLevel(100);
+            mHeaderImage.setImageDrawable(sd);
 
 
         } else {

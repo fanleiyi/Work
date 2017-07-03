@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.day06_03_zhihu.fragment.SelfFragment">
+    tools:context="com.example.day06_03_zhihu.com.example.xcf.fragment.SelfFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

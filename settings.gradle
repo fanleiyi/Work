@@ -1,1 +1,1 @@
-include ':app', ':pullToRefresh_Library', ':core4_groupon', ':viewpagerIndicator_library', ':app_XCF'
+include ':app', ':pullToRefresh_Library', ':viewpagerIndicator_library', ':app_XCF', ':core4_bmobdemo', 'core4_groupon'

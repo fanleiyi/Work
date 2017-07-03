@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.day06_03_zhihu.activity.ClassifyActivity">
+    tools:context="com.example.day06_03_zhihu.com.example.xcf.activity.ClassifyActivity">
 
     <LinearLayout
         android:orientation="horizontal"

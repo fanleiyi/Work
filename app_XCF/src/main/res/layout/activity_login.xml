@@ -5,7 +5,7 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.day06_03_zhihu.activity.LoginActivity">
+    tools:context="com.example.day06_03_zhihu.com.example.xcf.activity.LoginActivity">
 
     <TextView
         android:id="@+id/textView7"

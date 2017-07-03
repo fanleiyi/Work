@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_find"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tarena.fanly.ui.FindActivity">
+    tools:context="com.tarena.groupon.ui.FindActivity">
 
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:clickable="true" />
+
+    <Button
+        android:id="@+id/btn_find_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="附近..."
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+
+
+        />
 
 </RelativeLayout>

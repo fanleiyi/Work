@@ -5,13 +5,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".app.MyApp"
+        android:name="com.example.xcf.app.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="下厨房"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name="com.example.xcf.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,13 +19,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.example.xcf.activity.MainActivity"
             android:label=""
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".activity.NoviceActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.RegistActivity" />
-        <activity android:name=".activity.ClassifyActivity"></activity>
+        <activity android:name="com.example.xcf.activity.NoviceActivity" />
+        <activity android:name="com.example.xcf.activity.LoginActivity" />
+        <activity android:name="com.example.xcf.activity.RegistActivity" />
+        <activity android:name="com.example.xcf.activity.ClassifyActivity" />
+        <activity android:name="com.example.xcf.activity.MenuActivity"></activity>
     </application>
 
 </manifest>

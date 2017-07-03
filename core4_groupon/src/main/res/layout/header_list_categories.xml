@@ -225,10 +225,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/categories6"
                 android:layout_below="@+id/tv_header_list_categories_6_subtitle"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/imageView" />
+                android:src="@drawable/categories6" />
         </RelativeLayout>
 
         <RelativeLayout

@@ -64,11 +64,13 @@
     </RadioGroup>
 
     <RadioGroup
+        android:id="@+id/radio_xcf_menu"
         android:orientation="horizontal"
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="96dp">
         <RadioButton
+            android:id="@+id/rbtn_xcf_1"
             android:layout_margin="5dp"
             android:background="@drawable/zaocan"
             android:layout_width="0dp"
@@ -80,6 +82,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"/>
         <RadioButton
+            android:id="@+id/rbtn_xcf_2"
             android:background="@drawable/zhongcan"
             android:layout_margin="5dp"
             android:layout_width="0dp"
@@ -91,6 +94,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent" />
         <RadioButton
+            android:id="@+id/rbtn_xcf_3"
             android:background="@drawable/wancan"
             android:layout_margin="5dp"
             android:layout_width="0dp"

@@ -1,11 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_business"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tarena.fanly.ui.BusinessActivity">
+    android:orientation="vertical" >
+
     <include
         android:id="@+id/headerview"
         layout="@layout/header_business_layout" />
@@ -14,36 +11,34 @@
         android:id="@+id/tab"
         layout="@layout/tab_business_layout" />
 
-
     <FrameLayout
-
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
-
-    <ListView
-        android:id="@+id/lv_business_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
-        <include
-            android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <ListView
+            android:id="@+id/lv_business_listview"
             android:layout_width="match_parent"
-            android:layout_gravity="bottom"
-            layout="@layout/footer_business_layout"
-            />
+            android:layout_height="match_parent">
+        </ListView>
 
-        <include
-            android:id="@+id/include_menu_city"
-            layout="@layout/muen_city_layout"
-            android:visibility="invisible"
-            />
         <ImageView
             android:id="@+id/iv_business_loading"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:src="@drawable/refreshing_anim"/>
-</FrameLayout>
+
+        <include
+            android:id="@+id/district_layout"
+            layout="@layout/district_select_layout"
+            android:visibility="invisible"
+            />
+
+
+    </FrameLayout>
+
+    <include
+        layout="@layout/footer_business_layout"
+        />
 
 </LinearLayout>

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Work.iml" filepath="$PROJECT_DIR$/Work.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app_XCF/app_XCF.iml" filepath="$PROJECT_DIR$/app_XCF/app_XCF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core4_bmobdemo/core4_bmobdemo.iml" filepath="$PROJECT_DIR$/core4_bmobdemo/core4_bmobdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/core4_groupon/core4_groupon.iml" filepath="$PROJECT_DIR$/core4_groupon/core4_groupon.iml" />
       <module fileurl="file://$PROJECT_DIR$/pullToRefresh_Library/pullToRefresh_Library.iml" filepath="$PROJECT_DIR$/pullToRefresh_Library/pullToRefresh_Library.iml" />
       <module fileurl="file://$PROJECT_DIR$/viewpagerIndicator_library/viewpagerIndicator_library.iml" filepath="$PROJECT_DIR$/viewpagerIndicator_library/viewpagerIndicator_library.iml" />
